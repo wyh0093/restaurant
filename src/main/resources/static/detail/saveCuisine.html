@@ -1,0 +1,143 @@
+﻿
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+    <!-- 包含公共的JSP代码片段 -->
+	
+<title>无线点餐平台</title>
+
+
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<script type="text/javascript" src="style/js/jquery.js"></script>
+<script type="text/javascript" src="style/js/page_common.js"></script>
+	<script type="text/javascript" src="app.js"></script>
+<link href="style/css/common_style_blue.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="style/css/index_1.css" />
+</head>
+<body>
+
+
+<!-- 页面标题 -->
+<div id="TitleArea">
+	<div id="TitleArea_Head"></div>
+	<div id="TitleArea_Title">
+		<div id="TitleArea_Title_Content">
+			
+				
+				
+					<img border="0" width="13" height="13" src="style/images/title_arrow.gif"/>  添加菜系
+				
+			
+		</div>
+    </div>
+	<div id="TitleArea_End"></div>
+</div>
+
+
+<!-- 主内容区域（数据列表或表单显示） -->
+<div id="MainArea">
+	<!-- 表单内容 -->
+	<form action="#" method="post">
+	
+		<!-- 本段标题（分段标题） -->
+		<div class="ItemBlock_Title">
+        	<img width="4" height="7" border="0" src="style/images/item_point.gif"> 菜系信息&nbsp;
+        </div>
+		<!-- 本段表单字段 -->
+        <div class="ItemBlockBorder">
+            <div class="ItemBlock">
+				<div class="ItemBlock2">
+					<table cellpadding="0" cellspacing="0" class="mainForm">
+						<tr>
+							<td width="80px">菜系名称</td>
+							<td>
+								<input type="text" name="d_name" id="d_name" class="InputStyle" value=""/> *
+								<input type="hidden" name="d_id" id="d_id" value="" />
+							</td>
+						</tr>
+					</table>
+				</div>
+            </div>
+        </div>
+		
+		<!-- 表单操作 -->
+		<div id="InputDetailBar">
+			
+				
+				
+					 <input type="button" onclick="save();" value="添加" class="FunctionButtonInput">
+				
+			
+            <a href="javascript:history.go(-1);" class="FunctionButton">返回</a>
+        </div>
+	</form>
+	
+</div>
+
+</body>
+<script type="text/javascript" src="jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="app.js"></script>
+<script type="text/javascript">
+	$(function () {
+        var id = location.href.substr(location.href.indexOf("=")+1,location.href.length);
+        if(id.length==location.href.length){
+            return;
+		}else {
+            document.getElementById("d_id").value = id;
+            var param= {"id":id};
+            $.ajax({
+                type: "POST",
+                url: contextPath+"dtype/findOne",
+                data: {id:id},
+                dataType: "json",
+                success: function(data){
+                    document.getElementById("d_name").value = data.d_name;
+                }
+            });
+        }
+    });
+	function save() {
+        var name = $("#d_name").val();
+        var id =  $("#d_id").val();
+        var param = null;
+        var url = "";
+        if(""==id){
+            param= {"d_name":name};
+            url = "dtype/save";
+        }else {
+            param= {"id":id,"d_name":name};
+            url = "dtype/update";
+		}
+        $.ajax({
+            type: "POST",
+            url: contextPath+url,
+            contentType: "application/json",
+            data: JSON.stringify(param),
+            dataType: "text",
+            success: function(data){
+                if("success"==data){
+                    history.go(-1);
+                }
+
+            }
+        });
+
+
+
+		/*var name = $("#d_name").val();
+		$.ajax({
+			type: "POST",
+			url: contextPath+"dtype/save",
+			data: {"d_name":name},
+			dataType: "text",
+			success: function(data){
+				if("success"==data){
+				    alert("添加成功！");
+				    history.back();
+				}
+			}
+		});*/
+    }
+</script>
+</html>

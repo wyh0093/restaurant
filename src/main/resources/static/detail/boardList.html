@@ -1,0 +1,145 @@
+﻿<html>
+<head>
+ 	<!-- 包含公共的JSP代码片段 -->
+<title>无线点餐平台</title>
+<meta charset="UTF-8">
+<link href="style/css/common_style_blue.css" rel="stylesheet" type="text/css">
+<link rel="stylesheet" type="text/css" href="style/css/index_1.css" />
+</head>
+<body>
+<!-- 页面标题 -->
+<div id="TitleArea">
+	<div id="TitleArea_Head"></div>
+	<div id="TitleArea_Title">
+		<div id="TitleArea_Title_Content">
+			<img border="0" width="13" height="13" src="style/images/title_arrow.gif"/> 餐桌列表
+		</div>
+    </div>
+	<div id="TitleArea_End"></div>
+</div>
+
+
+<!-- 过滤条件 -->
+<div id="QueryArea">
+	<!--<form action="/wirelessplatform/board.html" method="get">-->
+		<input type="hidden" name="method" value="search">
+		<input type="text" id="keyword" name="keyword" title="请输入餐桌名称">
+		<input type="button" onclick="findAll()" value="搜索">
+	<!--</form>-->
+</div>
+
+
+<!-- 主内容区域（数据列表或表单显示） -->
+<div id="MainArea">
+    <table class="MainArea_Content" cellspacing="0" cellpadding="0">
+        <!-- 表头-->
+        <thead>
+            <tr align="center" valign="middle" id="TableTitle">
+				<td width="20%">编号</td>
+				<td width="20%">桌名</td>
+				<td width="30%">预定时间</td>
+				<td width="30%">操作</td>
+			</tr>
+		</thead>	
+		<!--显示数据列表 -->
+        <tbody id="TableData">
+        </tbody>
+    </table>
+	
+   <!-- 其他功能超链接 -->
+	<div id="TableTail" align="center">
+		<div class="FunctionButton"><a href="saveBoard.html">添加</a></div>
+    </div> 
+</div>
+</body>
+<script type="text/javascript" src="jquery-2.1.4.min.js"></script>
+<script type="text/javascript" src="style/js/page_common.js"></script>
+<script type="text/javascript" src="app.js"></script>
+<script type="text/javascript">
+    $(function(){
+        findAll();
+	});
+    function findAll() {
+		var keyword = $("#keyword").val();
+        $.ajax({
+            type: "POST",
+            url: initContextPath()+"desk/findAll",
+            data: {page:1, pageSize:10,keyword:keyword},
+            dataType: "json",
+            success: function(data){
+                // alert(data.content.length);
+				var html="";
+                var content = data.content;
+                for(var i=0;i<content.length;i++){
+                    html+="<tr class=\"TableDetail1\">";
+                    html+="<td align=\"center\">"+(i+1)+"&nbsp;</td>";
+                    html+="<td align=\"center\">"+content[i].d_name+"&nbsp;</td>";
+                    var time = content[i].d_bookTime;
+                    if(content[i].d_bookTime==null){
+                        time="";
+					}
+                    html+="<td align=\"center\">"+time+"&nbsp;</td>";
+                   html+="<td align=\"center\">" +
+                        "<a href=\"#;\"  onclick=\"updateDesk("+content[i].id+",'"+content[i].d_status+"');\" class=\"FunctionButton\">"+content[i].d_status+"</a>\t\t\t\t\n" +
+                        "\t\t\t\t\t<a href=\"#;\" onclick=\"del("+content[i].id+");\"class=\"FunctionButton\">删除</a>\t\t\t\t\n" +
+                        "\t\t\t\t</td>";
+                    html+="</tr>";
+				}
+
+                var tbody = document.getElementById("TableData");
+                tbody.innerHTML=html;
+                // console.log(data);
+
+            },
+             error:function(e){
+                 console.log(e);
+             }
+    });
+    }
+
+    /**
+     * 修改餐桌状态
+     * @param id
+     * @param update
+     */
+    function updateDesk(id,status) {
+        var param= {"id":id,"d_status":status};
+       $.ajax({
+            type: "POST",
+            url: initContextPath()+"desk/update",
+			contentType:"application/json",
+            data: JSON.stringify(param),
+            dataType: "text",
+            success: function(data){
+                if("success"==data){
+                    findAll();
+                }
+            }
+        });
+    }
+
+    function del(id){
+        if(window.confirm('你确定要取消交易吗？')){
+            var param= {"id":id};
+            $.ajax({
+                type: "POST",
+                url: initContextPath()+"desk/del",
+                contentType:"application/json",
+                data: JSON.stringify(param),
+                dataType: "text",
+                success: function(data){
+                    if("success"==data){
+                        findAll();
+                    }
+                }
+            });
+            return true;
+        }else {
+            return false;
+		}
+
+    }
+
+
+</script>
+</html>
