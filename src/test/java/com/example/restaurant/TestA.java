@@ -13,11 +13,14 @@ public class TestA {
     @Value("${img.path}")
     private static String imgPath;
 
+
+
     public static void main(String[] args) {
 
 //        System.out.println(imgPath);
-        String path2 = Thread.currentThread().getContextClassLoader().getResource("").getPath()+"static";
-        System.out.println(path2);
+//        String path2 = Thread.currentThread().getContextClassLoader().getResource("").getPath()+"static";
+//        System.out.println(path2);
+
     }
 
 

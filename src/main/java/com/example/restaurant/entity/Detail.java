@@ -22,19 +22,29 @@ public class Detail implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id; //主键
 
-    private String deskId; //餐桌id
+    /*private String deskId; //餐桌id
 
-    private String d_typeId; //菜系id
+    private String d_typeId; //菜系id*/
 
     private String dishName; //菜名
 
-    private String price; //单价
+    private int price; //单价
 
     private int count; //数量
 
-    private String status; //是否已结账
+    private String status; //是否已结账  0:未结账   1：已结账
 
-    public String getStatus() {
+    public String getDeskName() {
+        return deskName;
+    }
+
+    public void setDeskName(String deskName) {
+        this.deskName = deskName;
+    }
+
+    private String deskName; //餐桌名称
+
+   public String getStatus() {
         return status;
     }
 
@@ -50,7 +60,7 @@ public class Detail implements Serializable {
         this.id = id;
     }
 
-    public String getDeskId() {
+    /*public String getDeskId() {
         return deskId;
     }
 
@@ -64,7 +74,7 @@ public class Detail implements Serializable {
 
     public void setD_typeId(String d_typeId) {
         this.d_typeId = d_typeId;
-    }
+    }*/
 
     public String getDishName() {
         return dishName;
@@ -74,11 +84,12 @@ public class Detail implements Serializable {
         this.dishName = dishName;
     }
 
-    public String getPrice() {
+
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

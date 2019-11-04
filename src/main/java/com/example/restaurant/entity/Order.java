@@ -28,11 +28,11 @@ public class Order implements Serializable {
 
     private Date time; //下单时间
 
-    private Long price;//金额
+    private int price;//金额
 
-    private String  status; //状态
+    private String  status; //状态  0：未结账   1：已结账
 
-    private String dishIds; //菜品id
+   /* private String dishIds; //菜品id*/
 
     public Integer getId() {
         return id;
@@ -58,11 +58,11 @@ public class Order implements Serializable {
         this.time = time;
     }
 
-    public Long getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(Long price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -74,11 +74,11 @@ public class Order implements Serializable {
         this.status = status;
     }
 
-    public String getDishIds() {
+   /* public String getDishIds() {
         return dishIds;
     }
 
     public void setDishIds(String dishIds) {
         this.dishIds = dishIds;
-    }
+    }*/
 }

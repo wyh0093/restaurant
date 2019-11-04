@@ -22,6 +22,9 @@ public class WebAppConfig extends WebMvcConfigurerAdapter {
         registry.addResourceHandler("/**")
                 .addResourceLocations("classpath:/static/");
 
+       registry.addResourceHandler("swagger-ui.html")
+               .addResourceLocations("classpath:/META-INF/resources/");
+
 
        registry.addResourceHandler("/IMG/**").addResourceLocations("file:"+ GetPath.getClassPath()+"images/");
         super.addResourceHandlers(registry);
